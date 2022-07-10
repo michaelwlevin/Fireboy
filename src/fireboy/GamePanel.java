@@ -96,6 +96,12 @@ public class GamePanel extends JPanel implements KeyListener {
     }
     
     
+    // slopes are between 0 and pi
+    public double getSlope(double x, double y){
+        return Math.PI/2;
+    }
+    
+    
     private int pixelwidth, pixelheight;
     
     public void paint(Graphics g){
