@@ -5,6 +5,8 @@
  */
 package fireboy;
 
+import java.awt.Graphics;
+
 /**
  *
  * @author michael
@@ -30,10 +32,10 @@ public class Player {
     public Player(double x, double y){
 
         xaccel = 7;
-        jumpxaccel = 5;
+        jumpxaccel = 4;
         xdecel = 50;
         maxxvelocity = 7;
-        jumpmaxxvelocity = 5;
+        jumpmaxxvelocity = 4;
         
         jumpvelocity = 8;
         
@@ -55,38 +57,43 @@ public class Player {
     
    
     
-    public void nextTimestep(GamePanel panel){
+    public void nextTimestep(GameEngine game){
 
         
-        double dt = GamePanel.timestep;
+        double dt = GameEngine.timestep;
         
-        double floor = panel.getFloor(x, y);
-        double ceiling = panel.getCeiling(x, y);
+        double floor = game.getFloor(x, y);
+        double ceiling = game.getCeiling(x, y);
         
-        double leftwall = panel.getLeftWall(x, y);
-        double rightwall = panel.getRightWall(x, y);
+        double leftwall = game.getLeftWall(x, y);
+        double rightwall = game.getRightWall(x, y);
         
-        double slope = panel.getSlope(x, y);
+        double slope = game.getSlope(x, y);
 
         
         
-        
+        boolean onground = true;
         
         if(y - height == floor){
             if(jump){
                 yvelocity += jumpvelocity;
                 jump = false;
             }
+            onground = true;
         }
         else{
             jump = false;
             slope = Math.PI/2;
+            onground = false;
         }
         
+        double xgravity = 0;
+        double ygravity = 0;
         
-        double ygravity = gravity * Math.sin(slope);
-        double xgravity = -gravity*Math.cos(slope);
-        
+        if(!onground){
+            ygravity = gravity * Math.sin(slope);
+            xgravity = -gravity*Math.cos(slope);
+        }
         
 
         double deltay = yvelocity * dt - 0.5 * ygravity * dt * dt;
@@ -97,14 +104,7 @@ public class Player {
 
         y += deltay;
 
-        if(y > ceiling){
-            y = ceiling - height;
-            yvelocity = 0;
-        }
-        else if(y - height < floor){
-            y = floor + height;
-            yvelocity = 0;
-        }
+        
 
         jump = false;
         
@@ -141,7 +141,7 @@ public class Player {
             }
         }
         
-        actualxaccel += xgravity;
+        
         
         double actualmaxxvelocity = Math.abs(slope)==Math.PI/2? jumpmaxxvelocity : maxxvelocity;
         
@@ -159,15 +159,32 @@ public class Player {
 
         
         x += deltax;
-         
+        
+        
+        if(onground){
+            
+            double h = deltax;
+            
+            double direction = deltax > 0? 1:-1;
+            
+            deltax = Math.cos(slope)*h * direction;
+            deltay = Math.sin(slope)*h * direction;
+        }
+        
+        
+        if(y > ceiling){
+            y = ceiling - height;
+            yvelocity = 0;
+        }
+        else if(y - height < floor){
+            y = floor + height;
+            yvelocity = 0;
+        }
          
         if(x < leftwall){
             x = leftwall;
-              
         }
-
-        if(x > rightwall-width){
-           
+        else if(x > rightwall-width){
             x = rightwall-width;
         }
         
@@ -188,5 +205,9 @@ public class Player {
     
     public double getHeight(){
         return height;
+    }
+    
+    public void draw(Graphics g, int x, int y, int width, int height){
+        
     }
 }

@@ -20,44 +20,31 @@ import javax.swing.Timer;
  *
  * @author michael
  */
-public class GamePanel extends JPanel implements KeyListener {
-    
-    public static final double timestep = 0.01;
-            
-            
-    private Fireboy fireboy;
-    private Watergirl watergirl;
+public class GamePanel extends JPanel{
     
     
-    private double width, height;
     
-    private Color background = Color.white;
+    
+    
+    
+    
+    
+    private int mode;
+    public static final int PLAY = 0;
+    public static final int WIN = 1;
+    public static final int LOSE = 2;
+    public static final int EMPTY = 3;
+    
+    private GameEngine engine;
     
     public GamePanel(){
+   
+        
+        mode = EMPTY;
         setPreferredSize(new Dimension(1080, 720));
         
-        width = 50;
-        height = 50;
         
-        
-        fireboy = new Fireboy(10, Player.height);
-        watergirl = new Watergirl(30, Player.height);
-        
-        
-        
-        addKeyListener(this);
-        requestFocus();
-        
-        Timer action = new Timer((int)Math.round(1000*timestep), new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                
-                nextTimestep();
-                 
-        
-            }
-        });
-        
-        action.start();
+
         
         Timer painter = new Timer(1000/60, new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -69,93 +56,47 @@ public class GamePanel extends JPanel implements KeyListener {
         painter.start();
     }
     
-    
-    
-    public void nextTimestep(){
-        fireboy.nextTimestep(this);
-        watergirl.nextTimestep(this);
+    public void setGame(GameEngine engine){
+        this.engine = engine;
     }
     
-    
-    
-    
-    public double getFloor(double x, double y){
-        return 0;
+    public void setMode(int mode){
+        this.mode = mode;
     }
-    
-    public double getCeiling(double x, double y){
-        return height;
-    }
-    
-    public double getLeftWall(double x, double y){
-        return 0;
-    }
-    
-    public double getRightWall(double x, double y){
-        return width;
-    }
-    
-    
-    // slopes are between 0 and pi
-    public double getSlope(double x, double y){
-        return Math.PI/2;
-    }
-    
-    
-    private int pixelwidth, pixelheight;
     
     public void paint(Graphics g){
         
-        g.setColor(background);
-        g.fillRect(0, 0, getWidth(), getHeight());
-      
+        int width = getWidth();
+        int height = getHeight();
         
-        pixelwidth = getWidth();
-        pixelheight = getHeight();
-        
-        // draw fireboy
-        int x = convertX(fireboy.getX());
-        int y = convertY(fireboy.getY());
-        
-        
-        int width = convertWidth(fireboy.getWidth());
-        int height = convertHeight(fireboy.getHeight());
-        
-        //System.out.println("fireboy: "+fireboy.getX()+" "+fireboy.getY()+" "+x+" "+y);
-        
-        g.setColor(Color.red);
-        g.fillRect(x, y, width, height);
-        
-        // draw watergirl
-        x = convertX(watergirl.getX());
-        y = convertY(watergirl.getY());
-        width = convertWidth(watergirl.getWidth());
-        height = convertHeight(watergirl.getHeight());
-        
-        g.setColor(Color.blue);
-        g.fillRect(x, y, width, height);
-        
+        if(mode == PLAY){
+            engine.paint(g);
+        }
+        else if(mode == LOSE){
+            g.setColor(Color.white);
+            g.fillRect(0, 0, width, height);
+            
+            g.setColor(Color.black);
+            
+            g.drawString("LOSE", width/2, height/2);
+        }
+        else if(mode == WIN){
+            g.setColor(Color.white);
+            g.fillRect(0, 0, width, height);
+            
+            g.setColor(Color.black);
+            
+            g.drawString("WIN", width/2, height/2);
+        }
+        else if(mode == EMPTY){
+            g.setColor(Color.white);
+            g.fillRect(0, 0, width, height);
+        }
     }
     
-    public int convertX(double x){
-
-        return (int)Math.round( x / width * pixelwidth);
-    }
     
-    public int convertY(double y){
-
-        return pixelheight - (int)Math.round( y / height * pixelheight);
-    }
     
-    public int convertWidth(double x){
-
-        return (int)Math.round( x / width * pixelwidth);
-    }
     
-    public int convertHeight(double y){
-
-        return (int)Math.round( y / height * pixelheight);
-    }
     
     
     
@@ -178,29 +119,5 @@ public class GamePanel extends JPanel implements KeyListener {
     }
     
     
-    public void keyPressed(KeyEvent e){
-        
-
-        switch(e.getKeyCode()){
-            case KeyEvent.VK_UP: fireboy.setJump(true); break;
-            case KeyEvent.VK_LEFT: fireboy.setMoveLeft(true); fireboy.setMoveRight(false); break;
-            case KeyEvent.VK_RIGHT: fireboy.setMoveRight(true); fireboy.setMoveLeft(false); break;
-            case KeyEvent.VK_W: watergirl.setJump(true); break;
-            case KeyEvent.VK_A: watergirl.setMoveLeft(true); break;
-            case KeyEvent.VK_D: watergirl.setMoveRight(true); break;
-        }
-    }
     
-    public void keyTyped(KeyEvent e){
-        
-    }
-    
-    public void keyReleased(KeyEvent e){
-        switch(e.getKeyCode()){
-            case KeyEvent.VK_LEFT: fireboy.setMoveLeft(false); break;
-            case KeyEvent.VK_RIGHT: fireboy.setMoveRight(false); break;
-            case KeyEvent.VK_A: watergirl.setMoveLeft(false); break;
-            case KeyEvent.VK_D: watergirl.setMoveRight(false); break;
-        }
-    }
 }

@@ -5,6 +5,9 @@
  */
 package fireboy;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 /**
  *
  * @author michael
@@ -13,5 +16,10 @@ public class Fireboy extends Player {
     
     public Fireboy(double x, double y){
         super(x, y);
+    }
+    
+    public void draw(Graphics g, int x, int y, int width, int height){
+        g.setColor(Color.red);
+        g.fillRect(x, y, width, height);
     }
 }

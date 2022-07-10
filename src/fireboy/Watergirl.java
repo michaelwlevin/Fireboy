@@ -5,6 +5,9 @@
  */
 package fireboy;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 /**
  *
  * @author michael
@@ -12,5 +15,10 @@ package fireboy;
 public class Watergirl extends Player {
     public Watergirl(double x, double y){
         super(x, y);
+    }
+    
+    public void draw(Graphics g, int x, int y, int width, int height){
+        g.setColor(Color.blue);
+        g.fillRect(x, y, width, height);
     }
 }

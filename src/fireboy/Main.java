@@ -21,17 +21,7 @@ public class Main {
     public static void main(String[] args) {
         // TODO code application logic here
          
-        GamePanel test = new GamePanel();
-        
-       
-        
-        JFrame frame = new JFrame();
-        frame.setLayout(new BorderLayout());
-        frame.add(test, BorderLayout.CENTER);
-        frame.addKeyListener(test);
-        frame.pack();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+        GameFrame test = new GameFrame();
     }
     
 }
