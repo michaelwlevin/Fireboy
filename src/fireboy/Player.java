@@ -63,8 +63,15 @@ public class Player {
         double floor = panel.getFloor(x, y);
         double ceiling = panel.getCeiling(x, y);
         
-        double slope = 0.0;
+        double leftwall = panel.getLeftWall(x, y);
+        double rightwall = panel.getRightWall(x, y);
+        
+        double slope = panel.getSlope(x, y);
 
+        
+        
+        
+        
         if(y - height == floor){
             if(jump){
                 yvelocity += jumpvelocity;
@@ -76,9 +83,14 @@ public class Player {
             slope = Math.PI/2;
         }
         
+        
+        double ygravity = gravity * Math.sin(slope);
+        double xgravity = -gravity*Math.cos(slope);
+        
+        
 
-        double deltay = yvelocity * dt - 0.5 * gravity * dt * dt;
-        yvelocity -= gravity * dt;
+        double deltay = yvelocity * dt - 0.5 * ygravity * dt * dt;
+        yvelocity -= ygravity * dt;
         
         //if(y - height > floor)
         //    System.out.println(y+" "+yvelocity+" "+deltay);
@@ -97,8 +109,7 @@ public class Player {
         jump = false;
         
         
-        double leftwall = panel.getLeftWall(x, y);
-        double rightwall = panel.getRightWall(x, y);
+        
         
         
         double actionxaccel = Math.abs(slope) == Math.PI/2? jumpxaccel : xaccel;
@@ -130,7 +141,9 @@ public class Player {
             }
         }
         
-        double actualmaxxvelocity = inair? jumpmaxxvelocity : maxxvelocity;
+        actualxaccel += xgravity;
+        
+        double actualmaxxvelocity = Math.abs(slope)==Math.PI/2? jumpmaxxvelocity : maxxvelocity;
         
         xvelocity = xvelocity + actualxaccel * dt;
         
