@@ -5,6 +5,7 @@
  */
 package fireboy;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 /**
@@ -20,6 +21,8 @@ public class Diamond {
     private boolean captured;
     
     public Diamond(double x, double y){
+        this.x = x;
+        this.y = y;
         this.width = 2;
         this.height = 2;
     }
@@ -62,13 +65,21 @@ public class Diamond {
         double pwidth = player.getWidth();
         double pheight = player.getHeight();
         
+        if(px+pwidth >= x && px <= x+width && py-pheight <= y && py >= y-height){
+            captured = true;
+            return true;
+        }
+        
+        
+        
         return false;
     }
     
     
     
     public void draw(Graphics g, int x, int y, int width, int height){
-        
+        g.setColor(Color.gray);
+        g.fillRect(x, y, width, height);
     }
     
     public boolean isCaptured(){

@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Timer;
 
@@ -46,6 +47,7 @@ public class GameEngine  implements KeyListener {
     public GameEngine(GamePanel panel){
         this.panel = panel;
         
+        diamonds = new ArrayList<>();
         
         width = 50;
         height = 50;
@@ -53,6 +55,8 @@ public class GameEngine  implements KeyListener {
         
         fireboywin = new Rectangle(0, 3, 2, 3);
         watergirlwin = new Rectangle(48, 3, 2, 3);
+        
+        diamonds.add(new Diamond(20, 5));
         
         fireboy = new Fireboy(10, Player.height);
         watergirl = new Watergirl(30, Player.height);
@@ -207,6 +211,7 @@ public class GameEngine  implements KeyListener {
         
         
         for(Diamond d : diamonds){
+            System.out.println(d.isCaptured());
             if(!d.isCaptured()){
                 d.draw(g, convertX(d.getX()), convertY(d.getY()), convertWidth(d.getWidth()), convertHeight(d.getHeight()));
             }
