@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.List;
 import javax.swing.Timer;
 
 /**
@@ -39,6 +40,8 @@ public class GameEngine  implements KeyListener {
     public static final int FIRE = 1;
     public static final int WATER = 2;
     public static final int POISON = 3;
+    
+    private List<Diamond> diamonds;
     
     public GameEngine(GamePanel panel){
         this.panel = panel;
@@ -95,6 +98,7 @@ public class GameEngine  implements KeyListener {
 
             if(floortype == WATER || floortype == POISON){
                 lose();
+                return;
             }
         }
         
@@ -120,15 +124,27 @@ public class GameEngine  implements KeyListener {
 
             if(floortype == FIRE || floortype == POISON){
                 lose();
+                return;
             }
         }
         
 
         if(fbwin && wgwin){
             win();
+            return;
+        }
+        
+        for(Diamond d : diamonds){
+            if(d.checkCapture(fireboy, watergirl)){
+                diamondCaptured(d);
+            }
         }
         
         
+    }
+    
+    public void diamondCaptured(Diamond d){
+        // play sound or something
     }
     
     public void win(){
@@ -187,6 +203,14 @@ public class GameEngine  implements KeyListener {
         
         g.setColor(new Color(170, 170, 255));
         g.fillRect(convertX(watergirlwin.x), convertY(watergirlwin.y), convertWidth(watergirlwin.width), convertHeight(watergirlwin.height));
+        
+        
+        
+        for(Diamond d : diamonds){
+            if(!d.isCaptured()){
+                d.draw(g, convertX(d.getX()), convertY(d.getY()), convertWidth(d.getWidth()), convertHeight(d.getHeight()));
+            }
+        }
         
         
         // draw fireboy
