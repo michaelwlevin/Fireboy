@@ -10,19 +10,24 @@ package fireboy;
  * @author michael
  */
 public class Shape {
-    public int getTop(int x){
+    public double getTop(double x){
         return 0;
     }
     
-    public int getBottom(int x){
+    public double getBottom(double x){
         return 0;
     }
     
-    public int getLeft(int y){
+    public double getLeft(double y){
         return 0;
     }
     
-    public int getRight(int y){
+    public double getRight(double y){
         return 0;
     }
+    
+    public boolean intersects(double x, double y, double width, double height){
+        return false;
+    }
+    
 }
