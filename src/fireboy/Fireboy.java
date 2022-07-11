@@ -18,8 +18,9 @@ public class Fireboy extends Player {
         super(x, y);
     }
     
-    public void draw(Graphics g, int x, int y, int width, int height){
-        g.setColor(Color.red);
-        g.fillRect(x, y, width, height);
+    public String getImageName(){
+        return "fireboy.png";
     }
+    
+
 }

@@ -211,7 +211,7 @@ public class GameEngine  implements KeyListener {
         
         
         for(Diamond d : diamonds){
-            System.out.println(d.isCaptured());
+          
             if(!d.isCaptured()){
                 d.draw(g, convertX(d.getX()), convertY(d.getY()), convertWidth(d.getWidth()), convertHeight(d.getHeight()));
             }

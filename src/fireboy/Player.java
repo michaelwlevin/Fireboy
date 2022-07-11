@@ -6,6 +6,10 @@
 package fireboy;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -27,7 +31,7 @@ public class Player {
     private boolean moveright;
     private boolean jump;
     
-    
+    private BufferedImage image;
     
     public Player(double x, double y){
 
@@ -41,6 +45,19 @@ public class Player {
         
         this.x = x;
         this.y = y;
+        
+        
+        
+        
+ 
+        try {
+            image = ImageIO.read(new File("images/"+getImageName()));
+        } catch (IOException e) {
+        }
+    }
+    
+    public String getImageName(){
+        return "";
     }
     
     public void setMoveLeft(boolean l){
@@ -208,6 +225,6 @@ public class Player {
     }
     
     public void draw(Graphics g, int x, int y, int width, int height){
-        
+        g.drawImage(image, x, y, width, height, null);
     }
 }

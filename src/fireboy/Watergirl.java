@@ -17,8 +17,8 @@ public class Watergirl extends Player {
         super(x, y);
     }
     
-    public void draw(Graphics g, int x, int y, int width, int height){
-        g.setColor(Color.blue);
-        g.fillRect(x, y, width, height);
+    public String getImageName(){
+        return "watergirl.png";
     }
+
 }

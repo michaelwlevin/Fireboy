@@ -7,6 +7,10 @@ package fireboy;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -17,6 +21,7 @@ public class Diamond {
     
     private double width, height;
     
+    private static BufferedImage image;
     
     private boolean captured;
     
@@ -25,7 +30,19 @@ public class Diamond {
         this.y = y;
         this.width = 2;
         this.height = 2;
+        
+        if(image == null){
+            try {
+                image = ImageIO.read(new File("images/diamond.png"));
+            } catch (IOException e) {
+            }
+        }
     }
+    
+    public BufferedImage getImage(){
+        return image;
+    }
+    
     
     public double getX(){
         return x;
@@ -78,8 +95,7 @@ public class Diamond {
     
     
     public void draw(Graphics g, int x, int y, int width, int height){
-        g.setColor(Color.gray);
-        g.fillRect(x, y, width, height);
+        g.drawImage(getImage(), x, y, width, height, null);
     }
     
     public boolean isCaptured(){
